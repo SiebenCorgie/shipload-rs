@@ -1,0 +1,6 @@
+[package]
+name = "shipload"
+version = "0.1.0"
+authors = ["Siebencorgie <siebencorgie@googlemail.com>"]
+
+[dependencies]
