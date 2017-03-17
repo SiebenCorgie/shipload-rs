@@ -1,2 +1,9 @@
 # shipload-rs
-A small gtk programm meant as a Cargo frontend. 
+
+A small GTK+ program meant as a Cargo front end. 
+
+
+
+
+
+
