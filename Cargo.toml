@@ -1,12 +1,11 @@
 [package]
-name = "shipload"
+name = "gtk_test"
 version = "0.1.0"
 authors = ["Siebencorgie <siebencorgie@googlemail.com>"]
 
 [dependencies.gtk]
 version = "0.1.2"
 features = ["v3_10"]
-
 
 
 [dependencies]
