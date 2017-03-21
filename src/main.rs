@@ -12,6 +12,7 @@ use std::io::prelude::*;
 use gtk::Builder;
 use gtk::prelude::*;
 
+
 // make moving clones into closures more convenient
 //shameless copied from the examples
 macro_rules! clone {
@@ -29,6 +30,15 @@ macro_rules! clone {
             move |$(clone!(@param $p),)+| $body
         }
     );
+}
+
+fn execute_command(location: &String, command: &String, arguments: &String){
+    Command::new("xterm")
+    .arg("-hold")
+    .arg("-e")
+    .arg("cd ".to_string() + location + " && " + command)
+    .spawn()
+    .expect("Failed to run command");
 }
 
 fn convert_to_str(x: &str) -> &str{
@@ -112,7 +122,27 @@ fn main() {
     }));
 
 //Cargo
+    cargo_build.connect_clicked(clone!(cargo_build_folder, cargo_build_arguments => move |_|{
+        let location = cargo_build_folder.get_filename();
+        let mut locationstr: String = "~".to_string();
+        match location{
+            Some(loc) => locationstr = match loc.to_str()
+                                        {
+                                            Some(string) => string.to_string(),
+                                            None => "None".to_string(),
+                                        },
+            None => locationstr = "~".to_string(),
+        }
 
+        let argument = cargo_build_arguments.get_text();
+        let mut argument_string: String = "".to_string();
+        match argument{
+            Some(arg) => argument_string = arg,
+            None => argument_string = "".to_string(),
+        }
+
+        execute_command(&locationstr, &"cargo build".to_string(), &argument_string.to_string());
+    }));
 //RustUp
 
 //Crates.io
