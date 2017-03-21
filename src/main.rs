@@ -2,6 +2,9 @@
 
 extern crate gtk;
 
+mod system_io;
+mod gtk_converter;
+
 //Os interaction
 use std::process::Command;
 use std::process::ChildStdout;
@@ -96,7 +99,6 @@ fn main() {
     //Close event
     close_button.connect_clicked(move |_| {
         println!("Closing normal!");
-
         gtk::main_quit();
         Inhibit(false);
 
@@ -123,24 +125,10 @@ fn main() {
 
 //Cargo
     cargo_build.connect_clicked(clone!(cargo_build_folder, cargo_build_arguments => move |_|{
-        let location = cargo_build_folder.get_filename();
-        let mut locationstr: String = "~".to_string();
-        match location{
-            Some(loc) => locationstr = match loc.to_str()
-                                        {
-                                            Some(string) => string.to_string(),
-                                            None => "None".to_string(),
-                                        },
-            None => locationstr = "~".to_string(),
-        }
 
-        let argument = cargo_build_arguments.get_text();
-        let mut argument_string: String = "".to_string();
-        match argument{
-            Some(arg) => argument_string = arg,
-            None => argument_string = "".to_string(),
-        }
+        let argument_string: String = gtk_converter::text_from_entry(&cargo_build_arguments);
 
+        let locationstr: String = gtk_converter::path_from_filechooser(&cargo_build_folder);
         execute_command(&locationstr, &"cargo build".to_string(), &argument_string.to_string());
     }));
 //RustUp
@@ -148,21 +136,12 @@ fn main() {
 //Crates.io
     search_button.connect_clicked(clone!(text_buffer, search_entry => move |_| {
 
-        let search = search_entry.get_text();
-        let mut entry: String = String::from("NULL");
+
+        let entry: String = gtk_converter::text_from_entry(&search_entry);
 
         while level_bar.get_value() != 0.2 {
             level_bar.set_value(0.2);
         }
-
-
-        match search {
-            Some(x) =>{ entry = x;
-                        println!("{:?}", entry)},
-            None => println!("Failed to recieve"),
-        }
-
-
 
         println!("Outside: {}", entry);
         level_bar.set_value(0.5);
@@ -170,17 +149,16 @@ fn main() {
         let output = Command::new("cargo").arg("search")
                                             .arg(entry)
                                             .arg("--limit")
-                                            .arg("100")
+                                            .arg("40")
                                             .output()
                                             .expect("Failed to ls");
 
-        let hello: String = String::from_utf8(output.stdout).expect("Not UTF-8");
-        println!("ROlf: {:?}", hello);
-        println!("Finished reading strings");
+        let out: String = String::from_utf8(output.stdout).expect("Not UTF-8");
+
 
         level_bar.set_value(0.75);
 
-        let last: &str = convert_to_str(&hello);
+        let last: &str = convert_to_str(&out);
         text_buffer.set_text(last);
 
         level_bar.set_value(1.0);
