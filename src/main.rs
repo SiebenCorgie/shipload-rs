@@ -2,9 +2,10 @@
 
 extern crate gtk;
 
+//Custom mods
 mod system_io;
 mod gtk_converter;
-
+mod m_config;
 //Os interaction
 use std::process::Command;
 use std::process::ChildStdout;
@@ -39,7 +40,7 @@ fn execute_command(location: &String, command: &String, arguments: &String){
     Command::new("xterm")
     .arg("-hold")
     .arg("-e")
-    .arg("cd ".to_string() + location + " && " + command)
+    .arg("cd ".to_string() + location + " && " + command + " " + arguments)
     .spawn()
     .expect("Failed to run command");
 }
@@ -99,6 +100,12 @@ fn main() {
     //Close event
     close_button.connect_clicked(move |_| {
         println!("Closing normal!");
+
+        m_config::set_bool("bool", true);
+        m_config::set_string("name", "not defult");
+        m_config::set_int("int", 10);
+
+
         gtk::main_quit();
         Inhibit(false);
 

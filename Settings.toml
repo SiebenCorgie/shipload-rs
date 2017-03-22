@@ -1,0 +1,6 @@
+name = "default"
+rust_version = "0.0"
+last_project = "/home/"
+
+bool = false
+int = 1

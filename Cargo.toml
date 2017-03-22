@@ -9,3 +9,4 @@ features = ["v3_10"]
 
 
 [dependencies]
+config = "0.4.1"
