@@ -5,7 +5,7 @@ extern crate gtk;
 //Custom mods
 mod system_io;
 mod gtk_converter;
-mod m_config;
+pub mod m_config;
 //Os interaction
 use std::process::Command;
 use std::process::ChildStdout;
@@ -58,6 +58,9 @@ fn main() {
     let builder = Builder::new();
     builder.add_from_string(glade_src).unwrap();
 //**********************************************
+//Crucial
+
+    let configuration = m_config::create_config();
 //Main
     //Get Window
     let window: gtk::Window = builder.get_object("window").unwrap();
@@ -81,6 +84,9 @@ fn main() {
 
     let cargo_build_arguments: gtk::Entry = builder.get_object("Cargo_Build_ExtraOptions_Entry").unwrap();
 
+    let cargo_run_run: gtk::Button = builder.get_object("B_Cargo_Run").unwrap();
+
+    let cargo_run_arguments: gtk::Entry = builder.get_object("Cargo_Run_ExtraOptions_Entry").unwrap();
 //RustUp
 
 //Crates.io
@@ -100,11 +106,6 @@ fn main() {
     //Close event
     close_button.connect_clicked(move |_| {
         println!("Closing normal!");
-
-        m_config::set_bool("bool", true);
-        m_config::set_string("name", "not defult");
-        m_config::set_int("int", 10);
-
 
         gtk::main_quit();
         Inhibit(false);
@@ -137,6 +138,15 @@ fn main() {
 
         let locationstr: String = gtk_converter::path_from_filechooser(&cargo_build_folder);
         execute_command(&locationstr, &"cargo build".to_string(), &argument_string.to_string());
+    }));
+
+    cargo_run_run.connect_clicked(clone!(cargo_run_arguments, cargo_build_folder => move |_|{
+
+        let argument_string: String = gtk_converter::text_from_entry(&cargo_run_arguments);
+
+        let locationstr: String = gtk_converter::path_from_filechooser(&cargo_build_folder);
+        execute_command(&locationstr, &"cargo run".to_string(), &argument_string.to_string());
+
     }));
 //RustUp
 
