@@ -89,6 +89,16 @@ fn main() {
     let cargo_run_arguments: gtk::Entry = builder.get_object("Cargo_Run_ExtraOptions_Entry").unwrap();
 //RustUp
 
+    let ru_install_Button: gtk::Button = builder.get_object("B_NT_Install").unwrap();
+
+    let ru_install_channel: gtk::ComboBoxText = builder.get_object("RU_New_Channel").unwrap();
+
+    let ru_activate_channel_chooser: gtk::ComboBoxText = builder.get_object("RU_Active_Channel").unwrap();
+
+    let ru_activate_channel_button: gtk::Button = builder.get_object("B_NT_Activate").unwrap();
+
+    let ru_update_button: gtk::Button = builder.get_object("B_RU_Update").unwrap();
+
 //Crates.io
     let text_buffer: gtk::TextBuffer = builder.get_object("CratesTextBuffer").unwrap();
 
@@ -145,11 +155,46 @@ fn main() {
         let argument_string: String = gtk_converter::text_from_entry(&cargo_run_arguments);
 
         let locationstr: String = gtk_converter::path_from_filechooser(&cargo_build_folder);
-        execute_command(&locationstr, &"cargo run".to_string(), &argument_string.to_string());
+        system_io::execute_command(&locationstr, &"cargo run".to_string(), &argument_string.to_string());
 
     }));
 //RustUp
+    //Install new toolchain
+    ru_install_Button.connect_clicked(clone!(ru_install_channel => move |_| {
 
+        //Sort output
+        let entry = ru_install_channel.get_active_text();
+        let mut to_install: String =String::from("NoContent");
+        match entry {
+            Some(e) => to_install = e,
+            None => {}
+        }
+        //Join install command/argument
+        let execute_string: String = String::from("toolchain install ") + to_install.as_str();
+        //INstall
+        system_io::execute_command(&String::from("~/"), &String::from("rustup"), &execute_string);
+        println!("Installed: {}", to_install);
+
+    }));
+
+    //Activate channel
+    ru_activate_channel_button.connect_clicked(clone!(ru_activate_channel_chooser => move |_|{
+        //Sort output
+        let entry = ru_install_channel.get_active_text();
+        let mut to_activate: String =String::from("NoContent");
+        match entry {
+            Some(e) => to_activate = e,
+            None => {}
+        }
+        let activate_arg: String = String::from("default ") + to_activate.as_str();
+        system_io::execute_command(&String::from("~/"), &String::from("rustup"), &activate_arg);
+    }));
+
+    //Update everything
+    ru_update_button.connect_clicked(|_| {
+        system_io::execute_command(&String::from("~/"), &String::from("rustup"), &String::from("update"));
+
+    });
 //Crates.io
     search_button.connect_clicked(clone!(text_buffer, search_entry => move |_| {
 

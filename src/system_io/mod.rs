@@ -1,12 +1,12 @@
+//Os interaction
+use std::process::Command;
+use std::process::ChildStdout;
 
-
-
-fn main(){
-	let teddy = "This is Teddy..";
-
-	println!("{}", teddy);
-	println!("Teddy");
-	println!("Doing Stuff!");
-	
-	
+pub fn execute_command(location: &String, command: &String, arguments: &String){
+    Command::new("xterm")
+    .arg("-hold")
+    .arg("-e")
+    .arg("cd ".to_string() + location + " && " + command + " " + arguments)
+    .spawn()
+    .expect("Failed to run command");
 }

@@ -295,16 +295,6 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="RU_New_Channel">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">0</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkButton" id="B_NT_Install">
                                     <property name="label" translatable="yes">Install</property>
                                     <property name="visible">True</property>
@@ -314,6 +304,29 @@
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBoxText" id="RU_New_Channel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="active">0</property>
+                                    <property name="has_entry">True</property>
+                                    <property name="active_id">0</property>
+                                    <items>
+                                      <item id="0" translatable="yes">stable</item>
+                                      <item id="1" translatable="yes">nightly</item>
+                                      <item id="2" translatable="yes">beta</item>
+                                    </items>
+                                    <child internal-child="entry">
+                                      <object class="GtkEntry">
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -358,16 +371,6 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="RU_Ac_Channel">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">0</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkButton" id="B_NT_Activate">
                                     <property name="label">gtk-apply</property>
                                     <property name="visible">True</property>
@@ -379,6 +382,29 @@
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBoxText" id="RU_Active_Channel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="active">0</property>
+                                    <property name="has_entry">True</property>
+                                    <property name="active_id">0</property>
+                                    <items>
+                                      <item id="0" translatable="yes">stable</item>
+                                      <item id="1" translatable="yes">nightly</item>
+                                      <item id="2" translatable="yes">beta</item>
+                                    </items>
+                                    <child internal-child="entry">
+                                      <object class="GtkEntry">
+                                        <property name="can_focus">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
